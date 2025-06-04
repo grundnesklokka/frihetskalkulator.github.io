@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Er det ferie snart?</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: background 0.5s ease;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            margin: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            margin-top: 0;
+            color: #ff6b6b;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+        }
+        
+        input, select {
+            padding: 12px;
+            margin: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #ff6b6b;
+            outline: none;
+        }
+        
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #ff8e8e;
+            transform: translateY(-3px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .countdown-display {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .countdown-numbers {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        
+        .countdown-item {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 0;
+            border-radius: 12px;
+            width: 110px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        
+        .message {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #ff6b6b;
+            min-height: 60px;
+        }
+        
+        .freedom-mode {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            position: absolute;
+            top: -10px;
+            z-index: 10;
+        }
+        
+        .friday-option, .work-hours-option {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255,107,107,0.1);
+            border-radius: 8px;
+        }
+        
+        .friday-option {
+            display: none;
+        }
+        
+        .beach-icon {
+            font-size: 50px;
+            margin: 20px 0;
+        }
+        
+        .quotes {
+            font-style: italic;
+            margin: 20px 0;
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .countdown-item {
+                width: 80px;
+                padding: 10px 0;
+            }
+            
+            .countdown-value {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Er det ferie snart?</h1>
+        <div class="subtitle">Er du klar for sommerferien? Hvor lenge må du vente?</div>
+        
+        <div class="input-section">
+            <div>
+                <label for="name">Hva heter du?</label>
+                <input type="text" id="name" placeholder="Skriv navnet ditt her">
+            </div>
+            
+            <div>
+                <label for="vacation-date">Når starter ferien din?</label>
+                <input type="date" id="vacation-date">
+            </div>
+            
+            <div class="friday-option" id="friday-option">
+                <input type="checkbox" id="friday-checkbox">
+                <label for="friday-checkbox">Starter du ferien på mandag? Tell fra fredag kl. 17:00 i stedet!</label>
+            </div>
+            
+            <div class="work-hours-option">
+                <input type="checkbox" id="work-hours-checkbox">
+                <label for="work-hours-checkbox">Vil du telle arbeidstimer i stedet? (37,5t/uke, kun ukedager)</label>
+            </div>
+            
+            <button onclick="startCountdown()">Tell ned til friheten!</button>
+        </div>
+        
+        <div id="countdown-section" style="display:none;">
+            <div class="countdown-display">
+                <span id="name-display">Du</span> har...
+            </div>
+            
+            <div class="countdown-numbers">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="days">0</span>
+                    <span class="countdown-label">Dager</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="hours">0</span>
+                    <span class="countdown-label">Timer</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="minutes">0</span>
+                    <span class="countdown-label">Minutter</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="seconds">0</span>
+                    <span class="countdown-label">Sekunder</span>
+                </div>
+            </div>
+            
+            <div class="message" id="message"></div>
+            
+            <div class="quotes" id="quotes"></div>
+            
+            <div class="beach-icon">🏖️</div>
+        </div>
+        
+        <div id="freedom-mode" style="display:none;">
+            <h1>DU ER FRI!!!</h1>
+            <div class="beach-icon" style="font-size: 100px;">🏝️🎉</div>
+            <p>God sommer, <span id="freedom-name"></span>!</p>
+        </div>
+    </div>
+
+    <script>
+        // Dagens dato
+        const today = new Date();
+        
+        // Sett minimumsdato for feriestart til dagens dato
+        document.getElementById('vacation-date').min = today.toISOString().split('T')[0];
+        
+        // Sjekk om ferien starter på en mandag
+        document.getElementById('vacation-date').addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay(); // 0 for søndag, 1 for mandag
+            
+            if (dayOfWeek === 1) { // Mandag
+                document.getElementById('friday-option').style.display = 'block';
+            } else {
+                document.getElementById('friday-option').style.display = 'none';
+                document.getElementById('friday-checkbox').checked = false;
+            }
+        });
+        
+        // Array med morsomme meldinger basert på hvor lenge det er til ferien
+        const messages = [
+            { threshold: 0, message: "DU ER FRI!!! 🎉" },
+            { threshold: 3600, message: "Mindre enn en time igjen! Hold ut!" },
+            { threshold: 86400, message: "Mindre enn én dag til frihet! Du klarer det!" },
+            { threshold: 172800, message: "Bare to dager igjen! Nesten der!" },
+            { threshold: 604800, message: "Mindre enn en uke igjen! Sommeren kaller!" },
+            { threshold: 1209600, message: "Under to uker igjen! Begynn å pakke!" },
+            { threshold: 2592000, message: "Mindre enn en måned igjen! Snart sommer!" },
+            { threshold: 5184000, message: "Over en måned igjen... Pust dypt..." },
+            { threshold: 7776000, message: "Over to måneder igjen... Kanskje du burde ta en fridag?" },
+            { threshold: Infinity, message: "Det er ALTFOR lenge til ferien... Men du får det til!" }
+        ];
+        
+        // Array med sitater om sommer og ferie
+        const quotes = [
+            "«Sommer er den tiden da det er for varmt til å gjøre jobben man burde gjort om vinteren.» – Mark Twain",
+            "«En perfekt sommerdag er når solen skinner, vinden blåser, fuglene synger og gressklipperen er ødelagt.» – James Dent",
+            "«Dypt inne i seg har alle en sommer å huske.» – Ukjent",
+            "«Sommeren er den årstiden da det er for varmt til å gjøre de tingene det var for kaldt til å gjøre om vinteren.» – Ukjent",
+            "«Hvis du ikke har sommer i hjertet, finner du den ikke under solen.» – Ukjent",
+            "«Sommer betyr varme dager, varme netter og øl i kjøleskapet.» – Ukjent",
+            "«Sommeren er som et fyrverkeri: Strålende, men kortvarig.» – Ukjent",
+            "«Ta fri fra jobben, men aldri fra å ha det gøy.» – Ukjent",
+            "«Livet er bedre i flip-flops.» – Ukjent",
+            "«Du kan ikke kjøpe lykke, men du kan kjøpe is, og det er ganske nærme.» – Ukjent"
+        ];
+        
+        // Velg tilfeldig sitat
+        function getRandomQuote() {
+            return quotes[Math.floor(Math.random() * quotes.length)];
+        }
+        
+        // Countdown funksjon
+        let countdownInterval;
+        
+        function startCountdown() {
+            // Hent verdier fra input-feltene
+            const name = document.getElementById('name').value || 'Du';
+            const vacationDateInput = document.getElementById('vacation-date').value;
+            const useFridayOption = document.getElementById('friday-checkbox').checked;
+            const useWorkHoursOption = document.getElementById('work-hours-checkbox').checked;
+            
+            // Sjekk at dato er valgt
+            if (!vacationDateInput) {
+                alert('Velg en dato for når ferien din starter!');
+                return;
+            }
+            
+            // Oppdater visning av navn
+            document.getElementById('name-display').textContent = name;
+            document.getElementById('freedom-name').textContent = name;
+            
+            // Sett opp nedtelling
+            let targetDate;
+            
+            if (useFridayOption) {
+                // Beregn foregående fredag kl 17:00
+                const selectedDate = new Date(vacationDateInput);
+                const dayOfWeek = selectedDate.getDay(); // 0 for søndag, 1 for mandag
+                
+                if (dayOfWeek === 1) { // Mandag
+                    // Gå tilbake 3 dager til fredag
+                    const fridayDate = new Date(selectedDate);
+                    fridayDate.setDate(selectedDate.getDate() - 3);
+                    fridayDate.setHours(17, 0, 0, 0);
+                    targetDate = fridayDate;
+                }
+            } else {
+                // Bruk valgt dato
+                targetDate = new Date(vacationDateInput);
+                targetDate.setHours(0, 0, 0, 0); // Midnatt på valgt dato
+            }
+            
+            // Vis nedtellingsseksjonen
+            document.getElementById('countdown-section').style.display = 'block';
+            
+            // Oppdater sitat
+            document.getElementById('quotes').textContent = getRandomQuote();
+            
+            // Start nedtellingen
+            updateCountdown(targetDate, useWorkHoursOption);
+            
+            // Sett intervall for å oppdatere nedtellingen hvert sekund
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => updateCountdown(targetDate, useWorkHoursOption), 1000);
+        }
+        
+        function updateCountdown(targetDate, useWorkHours) {
+            const currentTime = new Date();
+            const timeDifference = targetDate - currentTime;
+            
+            // Sjekk om feriedatoen er passert
+            if (timeDifference <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.getElementById('message').textContent = "DU ER FRI!!! 🎉";
+                
+                // Vis frihetsmodus
+                document.getElementById('freedom-mode').style.display = 'flex';
+                document.body.style.background = 'linear-gradient(135deg, #ffcc33 0%, #ff6b6b 100%)';
+                
+                // Lag konfetti
+                createConfetti();
+                return;
+            }
+            
+            let days, hours, minutes, seconds;
+            
+            if (useWorkHours) {
+                // Beregn arbeidstimer (37,5 timer per uke, kun ukedager)
+                let workHoursLeft = 0;
+                let currentDate = new Date(currentTime);
+                
+                // Sett til kl 8 i dag hvis vi er før arbeidsdagen starter
+                if (currentDate.getHours() < 8) {
+                    currentDate.setHours(8, 0, 0, 0);
+                }
+                
+                // Sett til neste arbeidsdag kl 8 hvis vi er etter arbeidsdagen (etter kl 16)
+                if (currentDate.getHours() >= 16) {
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    currentDate.setHours(8, 0, 0, 0);
+                    
+                    // Hvis det er fredag, hopp til mandag
+                    if (currentDate.getDay() === 6) { // Lørdag
+                        currentDate.setDate(currentDate.getDate() + 2);
+                    }
+                }
+                
+                // Hopp over helgen hvis det er lørdag eller søndag
+                if (currentDate.getDay() === 0) { // Søndag
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    currentDate.setHours(8, 0, 0, 0);
+                } else if (currentDate.getDay() === 6) { // Lørdag
+                    currentDate.setDate(currentDate.getDate() + 2);
+                    currentDate.setHours(8, 0, 0, 0);
+                }
+                
+                while (currentDate < targetDate) {
+                    const dayOfWeek = currentDate.getDay();
+                    
+                    // Kun tell arbeidsdager (mandag til fredag)
+                    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                        // Beregn timer igjen i arbeidsdagen (8-16)
+                        let hoursToday;
+                        
+                        if (currentDate.getTime() === currentTime.getTime()) {
+                            // For nåværende dag, beregn gjenværende timer til kl 16
+                            const currentHour = currentTime.getHours();
+                            const currentMinute = currentTime.getMinutes();
+                            
+                            if (currentHour < 8) {
+                                hoursToday = 7.5; // Full arbeidsdag
+                            } else if (currentHour >= 16) {
+                                hoursToday = 0; // Arbeidsdagen er over
+                            } else {
+                                // Timer igjen i dag
+                                hoursToday = (16 - currentHour) - (currentMinute / 60);
+                                // Trekk fra 0.5 timer lunsj hvis vi er før lunsj
+                                if (currentHour < 12) {
+                                    hoursToday -= 0.5;
+                                }
+                            }
+                        } else {
+                            hoursToday = 7.5; // Full arbeidsdag for framtidige dager (37.5 / 5)
+                        }
+                        
+                        workHoursLeft += hoursToday;
+                    }
+                    
+                    // Gå til neste dag
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    currentDate.setHours(8, 0, 0, 0);
+                }
+                
+                // Konverter arbeidstimer til dager, timer, minutter og sekunder
+                days = Math.floor(workHoursLeft / 7.5); // Arbeidsdager
+                const remainingHours = workHoursLeft % 7.5;
+                hours = Math.floor(remainingHours);
+                minutes = Math.floor((remainingHours - hours) * 60);
+                seconds = Math.floor(((remainingHours - hours) * 60 - minutes) * 60);
+                
+                // Oppdater label for dager
+                document.querySelector('.countdown-item:nth-child(1) .countdown-label').textContent = "Arbeidsdager";
+            } else {
+                // Vanlig nedtelling (hele dager, timer, minutter og sekunder)
+                days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+                
+                // Reset label for dager
+                document.querySelector('.countdown-item:nth-child(1) .countdown-label').textContent = "Dager";
+            }
+            
+            // Oppdater nedtellingen
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            
+            // Finn riktig melding basert på gjenstående tid
+            const totalSeconds = Math.floor(timeDifference / 1000);
+            for (const item of messages) {
+                if (totalSeconds <= item.threshold) {
+                    document.getElementById('message').textContent = item.message;
+                    break;
+                }
+            }
+        }
+        
+        // Lag konfetti for feiringen
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffcc33', '#ff9f1c', '#2ec4b6', '#e71d36'];
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                    
+                    container.appendChild(confetti);
+                    
+                    // Animér konfettien
+                    const animation = confetti.animate(
+                        [
+                            { transform: 'translateY(0) rotate(0)', opacity: 1 },
+                            { transform: 'translateY(' + (Math.random() * 500 + 200) + 'px) rotate(' + (Math.random() * 360 + 180) + 'deg)', opacity: 0 }
+                        ],
+                        {
+                            duration: Math.random() * 3000 + 2000,
+                            easing: 'cubic-bezier(0,' + Math.random() + ',1,' + Math.random() + ')'
+                        }
+                    );
+                    
+                    animation.onfinish = () => {
+                        confetti.remove();
+                    };
+                }, Math.random() * 2000);
+            }
+        }
+    </script>
+</body>
+</html>
